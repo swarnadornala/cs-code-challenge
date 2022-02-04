@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <title>Exercise 1</title>
+    <style>
+        #displayArea {
+            width: 480px;
+            margin: 0 auto;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            margin-right: 16px;
+        }
+        .users-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .user-list-item {
+            margin: 8px;
+            padding: 16px;
+            background: #f5f5f5;
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div id="displayArea"></div>
+
+    <script id="usersTemplate" type="text/x-handlebars-template">
+        <ul class="users-list">
+            {{#each users}}
+            <li class="user-list-item">
+                <img class="avatar" src={{this.avatar}} alt={{this.name}} />
+                <div>
+                    <div>Id: {{this.id}}</div>
+                    <div>Name: {{this.name}}</div>
+                    <div>Created At: {{this.createdAt}}</div>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </script>
+    
+    <script type="text/javascript">
+        var tmpHtml = document.getElementById("usersTemplate").innerHTML;
+        var template = Handlebars.compile(tmpHtml);
+        var data;
+        fetch('https://615485ee2473940017efaed3.mockapi.io/assessment')
+            .then(res => res.json())
+            .then(response => {
+                data = template({
+                    users: response,
+                });
+                document.getElementById("displayArea").innerHTML += data;
+            });
+    </script>
+</body>
+</html>
